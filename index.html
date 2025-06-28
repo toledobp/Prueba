@@ -91,12 +91,33 @@ body {
 </p>
     <div style="font-size: 60px; animation: latir 1s infinite;">❤️</div>
 
-<style>
-@keyframes latir {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+<!-- Botón -->
+<button onclick="mostrarMensaje()" style="
+  padding: 15px 30px;
+  background: #00ffcc;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2em;
+  color: black;
+  box-shadow: 0 0 10px #00ffcc;
+  cursor: pointer;
+  transition: 0.3s;
+">Mostrar secreto 👀</button>
+
+<!-- Mensaje oculto -->
+<p id="mensaje" style="display:none; font-size: 1.5em; margin-top: 20px; color: white;">
+  Para mi mejor amiga mika:<br>
+    Nce cómo tuve tanta suerte de haber encontrado a alguien tan increilble
+    Como tú </p>
+    
+</p>
+
+<!-- Script -->
+<script>
+function mostrarMensaje() {
+  document.getElementById("mensaje").style.display = "block";
 }
-</style>
+</script>
 
         
         
