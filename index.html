@@ -1,62 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>prueba</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Exotic Trading - Cursos de Trading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Venta de cursos de trading con diseño exótico — landing page frontend (HTML + CSS)">
+  <style>
+    /* -----------------------------
+       Variables & Reset
+       ----------------------------- */
+    :root{
+      --bg1: #040218; /* deep space */
+      --bg2: #0f1226; /* darker */
+      --accent1: #8b5cf6; /* purple */
+      --accent2: #06b6d4; /* teal */
+      --accent3: #ffdd57; /* gold */
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --glass-border: rgba(255,255,255,0.08);
+      --radius: 16px;
+      --max-width: 1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.12), transparent 8%),
+                  radial-gradient(1000px 400px at 90% 90%, rgba(6,182,212,0.06), transparent 12%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.45;
+    }/* -----------------------------
+   Helpers
+   ----------------------------- */
+.container{width:calc(100% - 40px); max-width:var(--max-width); margin:0 auto}
+.row{display:flex;gap:24px;align-items:center}
+.flex{display:flex}
+.center{display:flex;align-items:center;justify-content:center}
+h1,h2,h3{margin:0}
+p{margin:0}
+
+/* -----------------------------
+   Animated Background Blobs (exotic feel)
+   ----------------------------- */
+.blobs{
+  position:fixed;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:0.85;
+}
+.blob{
+  position:absolute;border-radius:50%;filter:blur(60px);transform:translate3d(0,0,0);
+  animation:float 12s ease-in-out infinite;
+  opacity:0.95;
+}
+.blob.b1{width:520px;height:520px;background:linear-gradient(45deg,var(--accent1),#ff6bcb);left:-120px;top:-60px;animation-duration:14s}
+.blob.b2{width:380px;height:380px;background:linear-gradient(45deg,var(--accent2),#2dd4bf);right:-80px;bottom:-80px;animation-duration:10s}
+.blob.b3{width:260px;height:260px;background:linear-gradient(45deg,var(--accent3),#ff8a00);left:40%;top:20%;animation-duration:18s}
+@keyframes float{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.06)}100%{transform:translateY(0) scale(1)}}
+
+/* -----------------------------
+   Nav
+   ----------------------------- */
+header{position:relative;z-index:10;padding:22px 0}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:54px;height:54px;border-radius:12px;display:grid;place-items:center;font-family:'Orbitron';font-weight:700;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 6px 20px rgba(139,92,246,0.16);
+}
+nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0;align-items:center}
+nav a{color:inherit;text-decoration:none;font-weight:600;opacity:0.9}
+.cta{padding:10px 16px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));box-shadow:0 8px 25px rgba(6,182,212,0.08);font-weight:700}
+
+/* Mobile nav */
+.hamburger{display:none;cursor:pointer}
+@media(max-width:880px){nav ul{display:none}.hamburger{display:block}}
+
+/* -----------------------------
+   Hero
+   ----------------------------- */
+.hero{padding:60px 0 40px;position:relative;z-index:5}
+.hero-grid{display:grid;grid-template-columns:1fr 460px;gap:36px;align-items:center}
+.eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter: blur(4px);border:1px solid var(--glass-border);font-weight:600}
+.headline{font-family:'Orbitron',sans-serif;font-size:40px;line-height:1.03;letter-spacing:-0.02em;margin-top:18px}
+.sub{color:rgba(230,238,248,0.82);margin-top:14px;font-size:15px}
+.hero-cta{margin-top:22px;display:flex;gap:12px}
+.btn-ghost{padding:10px 14px;border-radius:12px;border:1px solid var(--glass-border);background:transparent;font-weight:600}
+
+/* Glass card */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius:18px;padding:22px;border:1px solid var(--glass-border);box-shadow:var(--card-shadow);
+}
+
+/* Pricing / features area */
+.features{padding:40px 0}
+.grid-feat{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feat{padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03)}
+.feat h3{font-size:16px}
+
+/* Pricing cards */
+.pricing{padding:36px 0}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.plan{padding:26px;border-radius:16px;background:linear-gradient(180deg, rgba(10,12,20,0.6), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.03);position:relative;overflow:hidden}
+.plan .tag{position:absolute;right:12px;top:12px;padding:6px 10px;border-radius:999px;font-weight:700;background:linear-gradient(90deg,var(--accent3),#ff8a60);color:#0b0720}
+.price{font-family:'Orbitron';font-size:28px;margin-top:8px}
+.include{margin-top:14px;font-size:14px;color:rgba(230,238,248,0.85)}
+.plan .buy{display:inline-block;margin-top:18px;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));font-weight:700}
+
+/* Testimonials */
+.testimonials{padding:28px 0}
+.t-grid{display:flex;gap:16px;align-items:stretch}
+.t-card{flex:1;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+
+/* Footer */
+footer{padding:28px 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:30px}
+
+/* Responsive tweaks */
+@media(max-width:1100px){.hero-grid{grid-template-columns:1fr 360px}}
+@media(max-width:880px){
+  .hero-grid{grid-template-columns:1fr;gap:20px}
+  .pricing-grid{grid-template-columns:1fr}
+  .grid-feat{grid-template-columns:1fr}
+  .t-grid{flex-direction:column}
+  .headline{font-size:32px}
+}
+
+/* Fancy neon underline animation */
+.neon{
+  position:relative;display:inline-block;padding-bottom:6px;
+}
+.neon:after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--accent2),var(--accent1));filter:blur(8px);opacity:0.9;transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.9,.2,1)}
+.neon:hover:after{transform:scaleX(1)}
+
+/* Small forms */
+.input{width:100%;padding:12px 14px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+/* micro animation */
+.float-up{transform:translateY(6px);animation:pop 1s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes pop{to{transform:translateY(0);opacity:1}}
+
+  </style>
 </head>
-<!-- Botón -->
-<button onclick="mostrarMensaje()" style="
-  padding: 15px 30px;
-  background: #00ffcc;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.2em;
-  color: black;
-  box-shadow: 0 0 10px #00ffcc;
-  cursor: pointer;
-  transition: 1.0s;
-">👉🤍👈</button>
+<body>
+  <!-- Background blobs -->
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>  <header class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">XT</div>
+        <div>
+          <div style="font-weight:700">Exotic Trading</div>
+          <div style="font-size:12px;color:rgba(230,238,248,0.6)">Aprende. Opera. Gana.</div>
+        </div>
+      </div><nav>
+    <ul>
+      <li><a href="#cursos">Cursos</a></li>
+      <li><a href="#planes">Planes</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#contacto" class="cta">Empieza ahora</a></li>
+    </ul>
+  </nav>
 
-<!-- Mensaje oculto -->
-<p id="mensaje" style="display:none; font-size: 1.5em; margin-top: 20px; color: white;">
+  <div class="hamburger" onclick="toggleNav()">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </div>
+</div>
 
-    Holaaa</p>
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background: linear-gradient(to right, #1c1c1c, #2e2e2e);
-  font-family: 'Segoe UI', sans-serif;
-  color: white;
-  text-align: center;
-  padding-top: 100px;
-}
-</style>
+  </header>  <main class="container">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Curso top del mes</div>
+          <h1 class="headline">Domina el <span class="neon">Trading</span> con estrategias <span style="color:var(--accent3)">exóticas</span> y probadas</h1>
+          <p class="sub">Cursos prácticos, señales reales, mentorías en vivo y una comunidad que opera contigo. Contenidos desde lo básico hasta estrategias algorítmicas.</p><div class="hero-cta">
+        <a class="cta" href="#planes">Ver planes</a>
+        <button class="btn-ghost" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contacto</button>
+      </div>
 
-    <p> Mi página, goosd</h3>
-    <img src="https://media.giphy.com/media/KYEl6lWy9akUg/giphy.gif" alt="Corazón de amistad" width="250">;
+      <div style="margin-top:22px;display:flex;gap:14px;align-items:center">
+        <div class="card" style="display:flex;gap:12px;align-items:center;padding:12px 14px;width:320px">
+          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:700">A+</div>
+          <div>
+            <div style="font-weight:700">Soporte 24/7</div>
+            <div style="font-size:13px;color:rgba(230,238,248,0.75)">Grupo privado + mentoría semanal</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:12px;color:rgba(230,238,248,0.6)">Usuarios satisfechos</div>
+          <div style="font-weight:700;font-size:22px">+12k</div>
+        </div>
+      </div>
+    </div>
 
-</style>
+    <aside>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;color:rgba(230,238,248,0.6)">Próximo webinar</div>
+            <div style="font-weight:700">Estrategias de alta probabilidad</div>
+          </div>
+          <div style="font-size:12px;color:rgba(230,238,248,0.6)">Gratis</div>
+        </div>
 
-<div class="corazon"></div>
-<p style="text-align: center; font-size: 20px; color: #d63384;">
-  onooo
-</p>
-    <div style="font-size: 60px; animation: latir 1s infinite;">❤️</div>
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
 
+        <p style="font-size:13px;color:rgba(230,238,248,0.8)">Apúntate al webinar en vivo y recibe una sesión de trading en directo.</p>
 
-<!-- Script -->
-<script>
-function mostrarMensaje() {
-  document.getElementById("mensaje").style.display = "block";
-}
-</script>
+        <form style="margin-top:12px;display:flex;flex-direction:column;gap:10px" onsubmit="event.preventDefault();alert('¡Inscrito!')">
+          <input class="input" placeholder="Tu nombre" required />
+          <input class="input" type="email" placeholder="Correo electrónico" required />
+          <button class="buy" style="padding:10px 12px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),var(--accent1));border:none;color:#0b0720;font-weight:700">Reservar mi lugar</button>
+        </form>
+      </div>
+    </aside>
 
-        
-        
+  </div>
+</section>
 
-</body>
-    
+<!-- Features -->
+<section id="cursos" class="features">
+  <div class="container">
+    <h2 style="font-size:22px;margin-bottom:12px">Qué aprenderás</h2>
+    <div class="grid-feat">
+      <div class="feat card">
+        <h3>Trading desde cero</h3>
+        <p style="margin-top:8px;color:rgba(230,238,248,0.8)">Bases, lectura de velas, tipos de órdenes y gestión del riesgo.</p>
+      </div>
+      <div class="feat card">
+        <h3>Estrategias exóticas</h3>
+        <p style="margin-top:8px;color:rgba(230,238,248,0.8)">Combinaciones de indicadores, setups poco comunes y optimización.</p>
+      </div>
+      <div class="feat card">
+        <h3>Automatización</h3>
+        <p style="margin-top:8px;color:rgba(230,238,248,0.8)">Introducción a bots, backtesting y deploy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="planes" class="pricing">
+  <div class="container">
+    <h2 style="font-size:22px;margin-bottom:12px">Planes</h2>
+    <div class="pricing-grid">
+      <div class="plan card">
+        <div class="tag">Popular</div>
+        <div style="font-size:14px;color:rgba(230,238,248,0.7)">Básico</div>
+        <div class="price">$29 <span style="font-size:12px;color:rgba(230,238,248,0.6)">/ mes</span></div>
+        <div class="include">Acceso a cursos grabados + comunidad</div>
+        <a class="buy" href="#contacto">Comprar</a>
+      </div>
+
+      <div class="plan card">
+        <div class="tag" style="background:linear-gradient(90deg,var(--accent1),#ff6bd2)">Pro</div>
+        <div style="font-size:14px;color:rgba(230,238,248,0.7)">Profesional</div>
+        <div class="price">$99 <span style="font-size:12px;color:rgba(230,238,248,0.6)">/ mes</span></div>
+        <div class="include">Mentorías semanales + señales en vivo + acceso a bots</div>
+        <a class="buy" href="#contacto">Comprar</a>
+      </div>
+
+      <div class="plan card">
+        <div class="tag" style="background:linear-gradient(90deg,#ffd86b,#ff8a60)">VIP</div>
+        <div style="font-size:14px;color:rgba(230,238,248,0.7)">VIP</div>
+        <div class="price">$249 <span style="font-size:12px;color:rgba(230,238,248,0.6)">/ mes</span></div>
+        <div class="include">1:1 coaching, señales avanzadas y capital gestionado (limitado)</div>
+        <a class="buy" href="#contacto">Comprar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonios" class="testimonials">
+  <div class="container">
+    <h2 style="font-size:22px;margin-bottom:12px">Testimonios</h2>
+    <div class="t-grid">
+      <div class="t-card card">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:48px;height:48px;border-radius:999px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:700">JP</div>
+          <div>
+            <div style="font-weight:700">Juan P.</div>
+            <div style="font-size:12px;color:rgba(230,238,248,0.6)">Trader independiente</div>
+          </div>
+        </div>
+        <p style="margin-top:10px;color:rgba(230,238,248,0.85)">"En 3 meses pasé de perder a tener una estrategia consistente. Las mentorías valen su precio."</p>
+      </div>
+
+      <div class="t-card card">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:48px;height:48px;border-radius:999px;background:linear-gradient(90deg,#ff8a60,#ffd86b);display:grid;place-items:center;font-weight:700">MA</div>
+          <div>
+            <div style="font-weight:700">María A.</div>
+            <div style="font-size:12px;color:rgba(230,238,248,0.6)">Analista</div>
+          </div>
+        </div>
+        <p style="margin-top:10px;color:rgba(230,238,248,0.85)">"Los cursos tienen ejemplos reales y sesiones en vivo que me ayudaron a entender el mercado."</p>
+      </div>
+
+      <div class="t-card card">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:48px;height:48px;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#06b6d4);display:grid;place-items:center;font-weight:700">AK</div>
+          <div>
+            <div style="font-weight:700">Alan K.</div>
+            <div style="font-size:12px;color:rgba(230,238,248,0.6)">Estudiante</div>
+          </div>
+        </div>
+        <p style="margin-top:10px;color:rgba(230,238,248,0.85)">"Me encanta la comunidad y las sesiones de repaso. Aprendes haciendo."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact / CTA -->
+<section id="contacto" style="padding:36px 0">
+  <div class="container">
+    <div class="card" style="display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px">
+        <h3 style="font-size:20px">¿Listo para empezar?</h3>
+        <p style="color:rgba(230,238,248,0.75);margin-top:8px">Escribe tu correo y te contactamos con la mejor opción según tu nivel.</p>
+      </div>
+      <form style="display:flex;gap:10px;flex:1;min-width:240px;justify-content:flex-end" onsubmit="event.preventDefault();alert('¡Gracias! Nos contactamos pronto')">
+        <input class="input" type="email" placeholder="Tu correo" required />
+        <button class="buy" style="border:none;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));font-weight:700">Enviar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+  </main>  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;gap:12px;align-items:center"><div class="logo" style="width:42px;height:42px;font-size:14px">XT</div><div style="font-size:13px">Exotic Trading © <span id="year"></span></div></div>
+      <div style="font-size:13px;color:rgba(230,238,248,0.6)">Política de privacidad · Términos · Soporte</div>
+    </div>
+  </footer>  <script>
+    // small helpers: toggle mobile nav
+    function toggleNav(){
+      const ul = document.querySelector('nav ul');
+      if(!ul) return;
+      if(ul.style.display === 'flex'){ul.style.display='none'}else{ul.style.display='flex';ul.style.flexDirection='column';ul.style.background='linear-gradient(180deg, rgba(255,255,255,0.02), transparent)';ul.style.position='absolute';ul.style.right='20px';ul.style.top='72px';ul.style.padding='12px';ul.style.borderRadius='12px';ul.style.border='1px solid rgba(255,255,255,0.04)'}
+    }
+
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // very light accessibility helpers (focus outline)
+    document.addEventListener('keydown',function(e){if(e.key==='Tab'){document.body.classList.add('user-is-tabbing')}})
+  </script></body>
 </html>
